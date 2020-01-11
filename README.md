@@ -32,13 +32,9 @@ You can stop when you feel the code is good enough, something you can come back 
 
 # Helpful resources
 
-## PHP 7
+## PHP 7.3
 
-I've decided to port the kata directly to PHP 7 instead of 5.6. This will allow you to practice also with the new PHP features. By the way, if you're not used to it yet, here you have some useful resources:
-
-* [PHP 7 new features](http://php.net/manual/en/migration70.new-features.php)
-* [Scalar type declarations example](https://github.com/tpunt/PHP7-Reference#scalar-type-declarations)
-* [Return type declarations example](https://github.com/tpunt/PHP7-Reference#return-type-declarations)
+I've decided to port the kata directly to PHP 7.3 instead of 7.
 
 ## PHPUnit 5.5
 
