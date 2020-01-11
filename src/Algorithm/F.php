@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace CodelyTV\FinderKata\Algorithm;
+namespace Kata\Algorithm;
 
 final class F
 {

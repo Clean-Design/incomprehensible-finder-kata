@@ -1,8 +1,17 @@
-help: ## Prints this help.
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+all: help
 
-build: ## Builds the docker container and installs dependencies
-	docker build -t finder-kata .
+## pull: Update docker images
+pull:
+	docker-compose pull
 
-test: ## Run unit tests
-	@docker run --rm -v `pwd`/src:/usr/app/src -v `pwd`/tests:/usr/app/tests finder-kata
+## shell: Interactive shell to use commands inside docker
+shell:
+	docker-compose run --rm php bash
+
+## test: Launch PHPUnit test suites
+test:
+	docker-compose run --rm php vendor/bin/phpunit
+
+## help: Show this screen
+help: Makefile
+	@sed -n 's/^##//p' $<

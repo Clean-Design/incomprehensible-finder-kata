@@ -1,8 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 
-declare(strict_types = 1);
-
-namespace CodelyTV\FinderKata\Algorithm;
+namespace Kata\Algorithm;
 
 final class Finder
 {
