@@ -32,9 +32,9 @@ You can stop when you feel the code is good enough, something you can come back 
 
 # Helpful resources
 
-## PHP 7.3
+## PHP 7.4
 
-I've decided to port the kata directly to PHP 7.3 instead of 7.
+I've decided to port the kata directly to PHP 7.4 instead of 7.
 
 ## PHPUnit 5.5
 
