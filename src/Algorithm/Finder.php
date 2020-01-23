@@ -4,60 +4,67 @@ namespace Kata\Algorithm;
 
 final class Finder
 {
-    /** @var Thing[] */
-    private $_p;
+    private const MIN_PERSONS_IN_LIST = 2;
 
-    public function __construct(array $p)
+    /** @var Person[] */
+    private array $persons;
+
+    public function __construct(array $persons)
     {
-        $this->_p = $p;
+        $this->persons = $persons;
     }
 
-    public function find(int $ft): F
+    public function find(int $mode): PersonComparison
     {
-        /** @var F[] $tr */
-        $tr = [];
+        if (!$this->validatePersonList()) {
+            return PersonComparison::empty();
+        }
 
-        for ($i = 0; $i < count($this->_p); $i++) {
-            for ($j = $i + 1; $j < count($this->_p); $j++) {
-                $r = new F();
+        $personComparisons = $this->getComparisons();
 
-                if ($this->_p[$i]->birthDate < $this->_p[$j]->birthDate) {
-                    $r->p1 = $this->_p[$i];
-                    $r->p2 = $this->_p[$j];
-                } else {
-                    $r->p1 = $this->_p[$j];
-                    $r->p2 = $this->_p[$i];
-                }
-
-                $r->d = $r->p2->birthDate->getTimestamp()
-                    - $r->p1->birthDate->getTimestamp();
-
-                $tr[] = $r;
+        usort(
+            $personComparisons,
+            static function(PersonComparison $a, PersonComparison $b) {
+                return $a->ageDifference() < $b->ageDifference() ? -1 : 1;
             }
+        );
+
+        switch ($mode) {
+            case FinderMode::CLOSEST:
+                return $personComparisons[0];
+            case FinderMode::FURTHEST:
+                return $personComparisons[count($personComparisons) - 1];
         }
 
-        if (count($tr) < 1) {
-            return new F();
+        return PersonComparison::empty();
+    }
+
+    /**
+     * @return PersonComparison[]
+     */
+    private function getComparisons(): array
+    {
+        /** @var PersonComparison[] $personComparisons */
+        $personComparisons = [];
+
+        foreach ($this->persons as $index => $person) {
+            $personComparisons = $this->compareWithNext($index + 1, $person, $personComparisons);
         }
 
-        $answer = $tr[0];
+        return $personComparisons;
+    }
 
-        foreach ($tr as $result) {
-            switch ($ft) {
-                case FT::ONE:
-                    if ($result->d < $answer->d) {
-                        $answer = $result;
-                    }
-                    break;
-
-                case FT::TWO:
-                    if ($result->d > $answer->d) {
-                        $answer = $result;
-                    }
-                    break;
-            }
+    private function compareWithNext(int $offset, Person $person, array $personComparisons): array
+    {
+        foreach (array_slice($this->persons, $offset) as $personToCompare) {
+            $personComparisons[] = PersonComparison::forTwoPeople($person, $personToCompare);
         }
 
-        return $answer;
+        return $personComparisons;
+    }
+
+    private function validatePersonList(): bool
+    {
+        return count($this->persons) >= self::MIN_PERSONS_IN_LIST;
     }
 }

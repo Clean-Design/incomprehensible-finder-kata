@@ -3,35 +3,24 @@
 namespace Kata\Tests\Algorithm;
 
 use Kata\Algorithm\Finder;
-use Kata\Algorithm\FT;
-use Kata\Algorithm\Thing;
+use Kata\Algorithm\FinderMode;
+use Kata\Algorithm\Person;
 use PHPUnit\Framework\TestCase;
 use DateTime;
 
 final class FinderTest extends TestCase
 {
-    private Thing $sue;
-    private Thing $greg;
-    private Thing $sarah;
-    private Thing $mike;
+    private Person $sue;
+    private Person $greg;
+    private Person $sarah;
+    private Person $mike;
 
     protected function setUp(): void
     {
-        $this->sue            = new Thing();
-        $this->sue->name      = "Sue";
-        $this->sue->birthDate = new DateTime("1950-01-01");
-
-        $this->greg            = new Thing();
-        $this->greg->name      = "Greg";
-        $this->greg->birthDate = new DateTime("1952-05-01");
-
-        $this->sarah            = new Thing();
-        $this->sarah->name      = "Sarah";
-        $this->sarah->birthDate = new DateTime("1982-01-01");
-
-        $this->mike            = new Thing();
-        $this->mike->name      = "Mike";
-        $this->mike->birthDate = new DateTime("1979-01-01");
+        $this->sue = new Person("Sue", new DateTime("1950-01-01"));
+        $this->greg = new Person("Greg", new DateTime("1952-05-01"));
+        $this->sarah = new Person("Sarah", new DateTime("1982-01-01"));
+        $this->mike = new Person("Mike", new DateTime("1979-01-01"));
     }
 
     /** @test */
@@ -40,10 +29,10 @@ final class FinderTest extends TestCase
         $list   = [];
         $finder = new Finder($list);
 
-        $result = $finder->find(FT::ONE);
+        $result = $finder->find(FinderMode::CLOSEST);
 
-        $this->assertEquals(null, $result->p1);
-        $this->assertEquals(null, $result->p2);
+        $this->assertEquals(null, $result->youngerPerson());
+        $this->assertEquals(null, $result->olderPerson());
     }
 
     /** @test */
@@ -53,10 +42,10 @@ final class FinderTest extends TestCase
         $list[] = $this->sue;
         $finder = new Finder($list);
 
-        $result = $finder->find(FT::ONE);
+        $result = $finder->find(FinderMode::CLOSEST);
 
-        $this->assertEquals(null, $result->p1);
-        $this->assertEquals(null, $result->p2);
+        $this->assertEquals(null, $result->youngerPerson());
+        $this->assertEquals(null, $result->olderPerson());
     }
 
     /** @test */
@@ -67,10 +56,10 @@ final class FinderTest extends TestCase
         $list[] = $this->greg;
         $finder = new Finder($list);
 
-        $result = $finder->find(FT::ONE);
+        $result = $finder->find(FinderMode::CLOSEST);
 
-        $this->assertEquals($this->sue, $result->p1);
-        $this->assertEquals($this->greg, $result->p2);
+        $this->assertEquals($this->sue, $result->youngerPerson());
+        $this->assertEquals($this->greg, $result->olderPerson());
     }
 
     /** @test */
@@ -81,10 +70,10 @@ final class FinderTest extends TestCase
         $list[] = $this->greg;
         $finder = new Finder($list);
 
-        $result = $finder->find(FT::TWO);
+        $result = $finder->find(FinderMode::FURTHEST);
 
-        $this->assertEquals($this->greg, $result->p1);
-        $this->assertEquals($this->mike, $result->p2);
+        $this->assertEquals($this->greg, $result->youngerPerson());
+        $this->assertEquals($this->mike, $result->olderPerson());
     }
 
     /** @test */
@@ -97,10 +86,10 @@ final class FinderTest extends TestCase
         $list[] = $this->greg;
         $finder = new Finder($list);
 
-        $result = $finder->find(FT::TWO);
+        $result = $finder->find(FinderMode::FURTHEST);
 
-        $this->assertEquals($this->sue, $result->p1);
-        $this->assertEquals($this->sarah, $result->p2);
+        $this->assertEquals($this->sue, $result->youngerPerson());
+        $this->assertEquals($this->sarah, $result->olderPerson());
     }
 
     /** @test */
@@ -113,9 +102,9 @@ final class FinderTest extends TestCase
         $list[] = $this->greg;
         $finder = new Finder($list);
 
-        $result = $finder->find(FT::ONE);
+        $result = $finder->find(FinderMode::CLOSEST);
 
-        $this->assertEquals($this->sue, $result->p1);
-        $this->assertEquals($this->greg, $result->p2);
+        $this->assertEquals($this->sue, $result->youngerPerson());
+        $this->assertEquals($this->greg, $result->olderPerson());
     }
 }
