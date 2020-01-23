@@ -10,19 +10,12 @@ use DateTime;
 
 final class FinderTest extends TestCase
 {
-    /** @var Thing */
-    private $sue;
+    private Thing $sue;
+    private Thing $greg;
+    private Thing $sarah;
+    private Thing $mike;
 
-    /** @var Thing */
-    private $greg;
-
-    /** @var Thing */
-    private $sarah;
-
-    /** @var Thing */
-    private $mike;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->sue            = new Thing();
         $this->sue->name      = "Sue";
@@ -42,7 +35,7 @@ final class FinderTest extends TestCase
     }
 
     /** @test */
-    public function should_return_empty_when_given_empty_list()
+    public function should_return_empty_when_given_empty_list(): void
     {
         $list   = [];
         $finder = new Finder($list);
@@ -54,7 +47,7 @@ final class FinderTest extends TestCase
     }
 
     /** @test */
-    public function should_return_empty_when_given_one_person()
+    public function should_return_empty_when_given_one_person(): void
     {
         $list   = [];
         $list[] = $this->sue;
@@ -67,7 +60,7 @@ final class FinderTest extends TestCase
     }
 
     /** @test */
-    public function should_return_closest_two_for_two_people()
+    public function should_return_closest_two_for_two_people(): void
     {
         $list   = [];
         $list[] = $this->sue;
@@ -81,7 +74,7 @@ final class FinderTest extends TestCase
     }
 
     /** @test */
-    public function should_return_furthest_two_for_two_people()
+    public function should_return_furthest_two_for_two_people(): void
     {
         $list   = [];
         $list[] = $this->mike;
@@ -95,7 +88,7 @@ final class FinderTest extends TestCase
     }
 
     /** @test */
-    public function should_return_furthest_two_for_four_people()
+    public function should_return_furthest_two_for_four_people(): void
     {
         $list   = [];
         $list[] = $this->sue;
@@ -110,10 +103,8 @@ final class FinderTest extends TestCase
         $this->assertEquals($this->sarah, $result->p2);
     }
 
-    /**
-     * @test
-     */
-    public function should_return_closest_two_for_four_people()
+    /** @test */
+    public function should_return_closest_two_for_four_people(): void
     {
         $list   = [];
         $list[] = $this->sue;
