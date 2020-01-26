@@ -2,8 +2,9 @@
 
 namespace Kata\Tests\Algorithm;
 
-use Kata\Algorithm\Finder;
-use Kata\Algorithm\FinderMode;
+use Kata\Algorithm\ClosestStrategy;
+use Kata\Algorithm\FinderService;
+use Kata\Algorithm\FurthestStrategy;
 use Kata\Algorithm\Person;
 use PHPUnit\Framework\TestCase;
 use DateTime;
@@ -27,9 +28,7 @@ final class FinderTest extends TestCase
     public function should_return_empty_when_given_empty_list(): void
     {
         $list   = [];
-        $finder = new Finder($list);
-
-        $result = $finder->find(FinderMode::CLOSEST);
+        $result = $this->closestFinder($list)->find();
 
         $this->assertEquals(null, $result->youngerPerson());
         $this->assertEquals(null, $result->olderPerson());
@@ -40,9 +39,7 @@ final class FinderTest extends TestCase
     {
         $list   = [];
         $list[] = $this->sue;
-        $finder = new Finder($list);
-
-        $result = $finder->find(FinderMode::CLOSEST);
+        $result = $this->closestFinder($list)->find();
 
         $this->assertEquals(null, $result->youngerPerson());
         $this->assertEquals(null, $result->olderPerson());
@@ -54,9 +51,7 @@ final class FinderTest extends TestCase
         $list   = [];
         $list[] = $this->sue;
         $list[] = $this->greg;
-        $finder = new Finder($list);
-
-        $result = $finder->find(FinderMode::CLOSEST);
+        $result = $this->closestFinder($list)->find();
 
         $this->assertEquals($this->sue, $result->youngerPerson());
         $this->assertEquals($this->greg, $result->olderPerson());
@@ -68,9 +63,7 @@ final class FinderTest extends TestCase
         $list   = [];
         $list[] = $this->mike;
         $list[] = $this->greg;
-        $finder = new Finder($list);
-
-        $result = $finder->find(FinderMode::FURTHEST);
+        $result = $this->furthestFinder($list)->find();
 
         $this->assertEquals($this->greg, $result->youngerPerson());
         $this->assertEquals($this->mike, $result->olderPerson());
@@ -84,9 +77,7 @@ final class FinderTest extends TestCase
         $list[] = $this->sarah;
         $list[] = $this->mike;
         $list[] = $this->greg;
-        $finder = new Finder($list);
-
-        $result = $finder->find(FinderMode::FURTHEST);
+        $result = $this->furthestFinder($list)->find();
 
         $this->assertEquals($this->sue, $result->youngerPerson());
         $this->assertEquals($this->sarah, $result->olderPerson());
@@ -100,11 +91,25 @@ final class FinderTest extends TestCase
         $list[] = $this->sarah;
         $list[] = $this->mike;
         $list[] = $this->greg;
-        $finder = new Finder($list);
-
-        $result = $finder->find(FinderMode::CLOSEST);
+        $result = $this->closestFinder($list)->find();
 
         $this->assertEquals($this->sue, $result->youngerPerson());
         $this->assertEquals($this->greg, $result->olderPerson());
+    }
+
+    private function closestFinder(array $people): FinderService
+    {
+        return new FinderService(
+            new ClosestStrategy(),
+            $people
+        );
+    }
+
+    private function furthestFinder(array $people): FinderService
+    {
+        return new FinderService(
+            new FurthestStrategy(),
+            $people
+        );
     }
 }
