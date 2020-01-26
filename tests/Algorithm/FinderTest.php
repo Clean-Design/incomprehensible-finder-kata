@@ -2,10 +2,11 @@
 
 namespace Kata\Tests\Algorithm;
 
-use Kata\Algorithm\ClosestStrategy;
-use Kata\Algorithm\FinderService;
-use Kata\Algorithm\FurthestStrategy;
-use Kata\Algorithm\Person;
+use Kata\Algorithm\Application\Find\FindRequest;
+use Kata\Algorithm\Application\Find\FindUseCase;
+use Kata\Algorithm\Domain\Person;
+use Kata\Algorithm\Domain\Service\FindClosestService;
+use Kata\Algorithm\Domain\Service\FindFurthestService;
 use PHPUnit\Framework\TestCase;
 use DateTime;
 
@@ -27,89 +28,98 @@ final class FinderTest extends TestCase
     /** @test */
     public function should_return_empty_when_given_empty_list(): void
     {
-        $list   = [];
-        $result = $this->closestFinder($list)->find();
+        $result = $this->closestUseCase()->execute(
+            new FindRequest([])
+        );
 
-        $this->assertEquals(null, $result->youngerPerson());
-        $this->assertEquals(null, $result->olderPerson());
+        $this->assertEquals(null, $result->comparison()->youngerPerson());
+        $this->assertEquals(null, $result->comparison()->olderPerson());
     }
 
     /** @test */
     public function should_return_empty_when_given_one_person(): void
     {
-        $list   = [];
-        $list[] = $this->sue;
-        $result = $this->closestFinder($list)->find();
+        $result = $this->closestUseCase()->execute(
+            new FindRequest([
+                $this->sue
+            ])
+        );
 
-        $this->assertEquals(null, $result->youngerPerson());
-        $this->assertEquals(null, $result->olderPerson());
+        $this->assertEquals(null, $result->comparison()->youngerPerson());
+        $this->assertEquals(null, $result->comparison()->olderPerson());
     }
 
     /** @test */
     public function should_return_closest_two_for_two_people(): void
     {
-        $list   = [];
-        $list[] = $this->sue;
-        $list[] = $this->greg;
-        $result = $this->closestFinder($list)->find();
+        $result = $this->closestUseCase()->execute(
+            new FindRequest([
+                $this->sue,
+                $this->greg
+            ])
+        );
 
-        $this->assertEquals($this->sue, $result->youngerPerson());
-        $this->assertEquals($this->greg, $result->olderPerson());
+        $this->assertEquals($this->sue, $result->comparison()->youngerPerson());
+        $this->assertEquals($this->greg, $result->comparison()->olderPerson());
     }
 
     /** @test */
     public function should_return_furthest_two_for_two_people(): void
     {
-        $list   = [];
-        $list[] = $this->mike;
-        $list[] = $this->greg;
-        $result = $this->furthestFinder($list)->find();
+        $result = $this->furthestUseCase()->execute(
+            new FindRequest([
+                $this->mike,
+                $this->greg
+            ])
+        );
 
-        $this->assertEquals($this->greg, $result->youngerPerson());
-        $this->assertEquals($this->mike, $result->olderPerson());
+        $this->assertEquals($this->greg, $result->comparison()->youngerPerson());
+        $this->assertEquals($this->mike, $result->comparison()->olderPerson());
     }
 
     /** @test */
     public function should_return_furthest_two_for_four_people(): void
     {
-        $list   = [];
-        $list[] = $this->sue;
-        $list[] = $this->sarah;
-        $list[] = $this->mike;
-        $list[] = $this->greg;
-        $result = $this->furthestFinder($list)->find();
+        $result = $this->furthestUseCase()->execute(
+            new FindRequest([
+                $this->sue,
+                $this->sarah,
+                $this->mike,
+                $this->greg
+            ])
+        );
 
-        $this->assertEquals($this->sue, $result->youngerPerson());
-        $this->assertEquals($this->sarah, $result->olderPerson());
+        $this->assertEquals($this->sue, $result->comparison()->youngerPerson());
+        $this->assertEquals($this->sarah, $result->comparison()->olderPerson());
     }
 
     /** @test */
     public function should_return_closest_two_for_four_people(): void
     {
-        $list   = [];
-        $list[] = $this->sue;
-        $list[] = $this->sarah;
-        $list[] = $this->mike;
-        $list[] = $this->greg;
-        $result = $this->closestFinder($list)->find();
+        $result = $this->closestUseCase()->execute(
+            new FindRequest([
+                $this->sue,
+                $this->sarah,
+                $this->mike,
+                $this->greg
+            ])
+        );
 
-        $this->assertEquals($this->sue, $result->youngerPerson());
-        $this->assertEquals($this->greg, $result->olderPerson());
+        $this->assertEquals($this->sue, $result->comparison()->youngerPerson());
+        $this->assertEquals($this->greg, $result->comparison()->olderPerson());
     }
 
-    private function closestFinder(array $people): FinderService
+    private function closestUseCase(): FindUseCase
     {
-        return new FinderService(
-            new ClosestStrategy(),
-            $people
+        return new FindUseCase(
+            new FindClosestService()
         );
     }
 
-    private function furthestFinder(array $people): FinderService
+    private function furthestUseCase(): FindUseCase
     {
-        return new FinderService(
-            new FurthestStrategy(),
-            $people
+        return new FindUseCase(
+            new FindFurthestService()
         );
     }
 }

@@ -1,8 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace Kata\Algorithm;
+namespace Kata\Algorithm\Application\Find;
 
-final class PersonComparison
+use Kata\Algorithm\Domain\Person;
+
+final class Comparison
 {
     private ?Person $youngerPerson;
     private ?Person $olderPerson;
