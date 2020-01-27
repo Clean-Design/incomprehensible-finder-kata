@@ -5,7 +5,7 @@ namespace Kata\Algorithm;
 final class Finder
 {
     /** @var Thing[] */
-    private $_p;
+    private array $_p;
 
     public function __construct(array $p)
     {

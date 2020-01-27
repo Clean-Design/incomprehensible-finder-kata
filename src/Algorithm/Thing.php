@@ -6,11 +6,8 @@ use DateTime;
 
 final class Thing
 {
-    /** @var string */
-    public $name;
-
-    /** @var DateTime */
-    public $birthDate;
+    public string $name;
+    public DateTime $birthDate;
 
     public function getName(): string
     {
