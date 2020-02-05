@@ -3,13 +3,16 @@
 namespace Kata\Tests\Algorithm;
 
 use Kata\Algorithm\Finder;
-use Kata\Algorithm\FinderMode;
 use Kata\Algorithm\Person;
 use PHPUnit\Framework\TestCase;
 use DateTime;
 
 final class FinderTest extends TestCase
 {
+    private const CLOSEST_MODE = 1;
+    private const FURTHEST_MODE = 2;
+    private const AN_INVALID_FINDER_MODE = 666;
+
     private Person $sue;
     private Person $greg;
     private Person $sarah;
@@ -29,7 +32,7 @@ final class FinderTest extends TestCase
         $list   = [];
         $finder = new Finder($list);
 
-        $result = $finder->find(FinderMode::CLOSEST);
+        $result = $finder->find(self::CLOSEST_MODE);
 
         $this->assertEquals(null, $result->youngerPerson());
         $this->assertEquals(null, $result->olderPerson());
@@ -42,7 +45,7 @@ final class FinderTest extends TestCase
         $list[] = $this->sue;
         $finder = new Finder($list);
 
-        $result = $finder->find(FinderMode::CLOSEST);
+        $result = $finder->find(self::CLOSEST_MODE);
 
         $this->assertEquals(null, $result->youngerPerson());
         $this->assertEquals(null, $result->olderPerson());
@@ -56,7 +59,7 @@ final class FinderTest extends TestCase
         $list[] = $this->greg;
         $finder = new Finder($list);
 
-        $result = $finder->find(FinderMode::CLOSEST);
+        $result = $finder->find(self::CLOSEST_MODE);
 
         $this->assertEquals($this->sue, $result->youngerPerson());
         $this->assertEquals($this->greg, $result->olderPerson());
@@ -70,7 +73,7 @@ final class FinderTest extends TestCase
         $list[] = $this->greg;
         $finder = new Finder($list);
 
-        $result = $finder->find(FinderMode::FURTHEST);
+        $result = $finder->find(self::FURTHEST_MODE);
 
         $this->assertEquals($this->greg, $result->youngerPerson());
         $this->assertEquals($this->mike, $result->olderPerson());
@@ -84,9 +87,10 @@ final class FinderTest extends TestCase
         $list[] = $this->sarah;
         $list[] = $this->mike;
         $list[] = $this->greg;
+        shuffle($list);
         $finder = new Finder($list);
 
-        $result = $finder->find(FinderMode::FURTHEST);
+        $result = $finder->find(self::FURTHEST_MODE);
 
         $this->assertEquals($this->sue, $result->youngerPerson());
         $this->assertEquals($this->sarah, $result->olderPerson());
@@ -102,9 +106,23 @@ final class FinderTest extends TestCase
         $list[] = $this->greg;
         $finder = new Finder($list);
 
-        $result = $finder->find(FinderMode::CLOSEST);
+        $result = $finder->find(self::CLOSEST_MODE);
 
         $this->assertEquals($this->sue, $result->youngerPerson());
         $this->assertEquals($this->greg, $result->olderPerson());
+    }
+
+    /** @test */
+    public function shouldReturnEmptyWhenGivenAnInvalidMode(): void
+    {
+        $finder = new Finder([
+            $this->sue,
+            $this->sarah,
+        ]);
+
+        $result = $finder->find(self::AN_INVALID_FINDER_MODE);
+
+        $this->assertEquals(null, $result->youngerPerson());
+        $this->assertEquals(null, $result->olderPerson());
     }
 }

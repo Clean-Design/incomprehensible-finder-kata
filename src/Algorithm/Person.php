@@ -17,11 +17,6 @@ final class Person
         $this->birthDate = $birthDate;
     }
 
-    public function name(): string
-    {
-        return $this->name;
-    }
-
     public function birthDate(): DateTime
     {
         return $this->birthDate;

@@ -19,11 +19,11 @@ final class PersonComparison
         Person $personOne,
         Person $personTwo
     ): self {
-        if ($personOne->birthDate() < $personTwo->birthDate()) {
-            return new self($personOne, $personTwo);
-        } else {
+        if ($personOne->birthDate() > $personTwo->birthDate()) {
             return new self($personTwo, $personOne);
         }
+
+        return new self($personOne, $personTwo);
     }
 
     public static function empty(): self

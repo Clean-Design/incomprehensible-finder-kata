@@ -3,7 +3,6 @@
         colors="true"
         beStrictAboutTestsThatDoNotTestAnything="true"
         beStrictAboutOutputDuringTests="true"
-        beStrictAboutTestSize="true"
         beStrictAboutChangesToGlobalState="true">
 
     <testsuites>
