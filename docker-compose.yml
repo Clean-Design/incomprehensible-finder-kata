@@ -1,4 +1,4 @@
 php:
-    image: aleixcam/php-fpm:7.4
+    image: gitlab.atrapalo.com:5005/docker/php-fpm-public:7.4-latest
     volumes:
         - .:/var/www
