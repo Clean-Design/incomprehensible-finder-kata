@@ -26,7 +26,7 @@ final class FinderTest extends TestCase
     }
 
     /** @test */
-    public function should_return_empty_when_given_empty_list(): void
+    public function shouldReturnEmptyWhenGivenEmptyList(): void
     {
         $result = $this->closestUseCase()->execute(
             new FindRequest([])
@@ -37,7 +37,7 @@ final class FinderTest extends TestCase
     }
 
     /** @test */
-    public function should_return_empty_when_given_one_person(): void
+    public function shouldReturnEmptyWhenGivenOnePerson(): void
     {
         $result = $this->closestUseCase()->execute(
             new FindRequest([
@@ -50,7 +50,7 @@ final class FinderTest extends TestCase
     }
 
     /** @test */
-    public function should_return_closest_two_for_two_people(): void
+    public function shouldReturnClosestTwoForTwoPeople(): void
     {
         $result = $this->closestUseCase()->execute(
             new FindRequest([
@@ -64,7 +64,7 @@ final class FinderTest extends TestCase
     }
 
     /** @test */
-    public function should_return_furthest_two_for_two_people(): void
+    public function shouldReturnFurthestTwoForTwoPeople(): void
     {
         $result = $this->furthestUseCase()->execute(
             new FindRequest([
@@ -78,7 +78,7 @@ final class FinderTest extends TestCase
     }
 
     /** @test */
-    public function should_return_furthest_two_for_four_people(): void
+    public function shouldReturnFurthestTwoForFourPeople(): void
     {
         $result = $this->furthestUseCase()->execute(
             new FindRequest([
@@ -94,7 +94,7 @@ final class FinderTest extends TestCase
     }
 
     /** @test */
-    public function should_return_closest_two_for_four_people(): void
+    public function shouldReturnClosestTwoForFourPeople(): void
     {
         $result = $this->closestUseCase()->execute(
             new FindRequest([

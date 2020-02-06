@@ -32,15 +32,11 @@ You can stop when you feel the code is good enough, something you can come back 
 
 # Helpful resources
 
-## PHP 7.4
+## PHPUnit 8.5
 
-I've decided to port the kata directly to PHP 7.4 instead of 7.
-
-## PHPUnit 5.5
-
-* [Introduction to writing tests for PHPUnit](https://phpunit.de/manual/current/en/writing-tests-for-phpunit.html)
-* [Testing exceptions with PHPUnit](https://phpunit.de/manual/current/en/writing-tests-for-phpunit.html#writing-tests-for-phpunit.exceptions)
-* [PHPUnit assertions](https://phpunit.de/manual/current/en/appendixes.assertions.html)
+* [Introduction to writing tests for PHPUnit](https://phpunit.readthedocs.io/en/8.5/writing-tests-for-phpunit.html)
+* [Testing exceptions with PHPUnit](https://phpunit.readthedocs.io/en/8.5/writing-tests-for-phpunit.html#testing-php-errors-warnings-and-notices)
+* [PHPUnit assertions](https://phpunit.readthedocs.io/en/8.5/assertions.html)
 
 ## Refactoring
 
@@ -61,4 +57,4 @@ You can also find the kata in different programming languages in isolated reposi
 
 This kata is a Scala port of [the original Incomprehensible Finder Refactoring Kata](https://github.com/OdeToCode/Katas/tree/master/Refactoring) created by [K. Scott Allen](https://github.com/OdeToCode).
 
-Port developed by [CodelyTV](https://codely.tv/) and [contributors](../../graphs/contributors) 😊
+Port developed by [CodelyTV](https://codely.tv/) and [contributors](../../graphs/contributors). Migrated to PHP 7.4 and Docker by [Clean Design](https://github.com/Clean-Design)
