@@ -19,10 +19,22 @@ final class PersonCollection implements Countable
         return count($this->persons);
     }
 
+    public function closestComparison(): PersonComparison
+    {
+        return $this->compare()[0];
+    }
+
+    public function furthestComparison(): PersonComparison
+    {
+        $comparisons = $this->compare();
+
+        return $comparisons[count($comparisons) - 1];
+    }
+
     /**
      * @return PersonComparison[]
      */
-    public function compare(): array
+    private function compare(): array
     {
         /** @var PersonComparison[] $personComparisons */
         $personComparisons = [];
@@ -35,8 +47,8 @@ final class PersonCollection implements Countable
 
         usort(
             $personComparisons,
-            static function(PersonComparison $a, PersonComparison $b) {
-                return $a->ageDifference() < $b->ageDifference() ? -1 : 1;
+            static function(PersonComparison $personComparison, PersonComparison $nextPersonComparison) {
+                return $personComparison->isClosestThan($nextPersonComparison) ? -1 : 1;
             }
         );
 

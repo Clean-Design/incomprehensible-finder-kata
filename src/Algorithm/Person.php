@@ -17,8 +17,13 @@ final class Person
         $this->birthDate = $birthDate;
     }
 
-    public function birthDate(): DateTime
+    public function isOlderThan(Person $person): bool
     {
-        return $this->birthDate;
+        return $this->birthDate > $person->birthDate;
+    }
+
+    public function ageDifference(Person $youngerPerson): int
+    {
+        return $this->birthDate->getTimestamp() - $youngerPerson->birthDate->getTimestamp();
     }
 }

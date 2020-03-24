@@ -19,14 +19,12 @@ final class Finder
             return PersonComparison::empty();
         }
 
-        $personComparisons = $this->personCollection->compare();
-
         if (FinderMode::closest()->isEqual(FinderMode::fromInteger($mode))) {
-            return $personComparisons[0];
+            return $this->personCollection->closestComparison();
         }
 
         if (FinderMode::furthest()->isEqual(FinderMode::fromInteger($mode))) {
-            return $personComparisons[count($personComparisons) - 1];
+            return $this->personCollection->furthestComparison();
         }
 
         return PersonComparison::empty();

@@ -19,7 +19,7 @@ final class PersonComparison
         Person $personOne,
         Person $personTwo
     ): self {
-        if ($personOne->birthDate() > $personTwo->birthDate()) {
+        if ($personOne->isOlderThan($personTwo)) {
             return new self($personTwo, $personOne);
         }
 
@@ -41,7 +41,13 @@ final class PersonComparison
         return $this->olderPerson;
     }
 
-    public function ageDifference() {
-        return $this->olderPerson->birthDate()->getTimestamp() - $this->youngerPerson->birthDate()->getTimestamp();
+    public function isClosestThan(PersonComparison $comparison): bool
+    {
+        return $this->difference() < $comparison->difference();
+    }
+
+    private function difference()
+    {
+        return $this->olderPerson->ageDifference($this->youngerPerson);
     }
 }
