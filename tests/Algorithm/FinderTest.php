@@ -2,8 +2,10 @@
 
 namespace Kata\Tests\Algorithm;
 
-use Kata\Algorithm\Finder;
-use Kata\Algorithm\Person;
+use Kata\Algorithm\Finder\Finder;
+use Kata\Algorithm\Finder\Mode\ClosestFinderMode;
+use Kata\Algorithm\Finder\Mode\FurthestFinderMode;
+use Kata\Algorithm\Person\Person;
 use PHPUnit\Framework\TestCase;
 use DateTime;
 
@@ -29,10 +31,7 @@ final class FinderTest extends TestCase
     /** @test */
     public function should_return_empty_when_given_empty_list(): void
     {
-        $list   = [];
-        $finder = new Finder($list);
-
-        $result = $finder->find(self::CLOSEST_MODE);
+        $result = $this->closestFinder([])->find(self::CLOSEST_MODE);
 
         $this->assertEquals(null, $result->youngerPerson());
         $this->assertEquals(null, $result->olderPerson());
@@ -41,11 +40,7 @@ final class FinderTest extends TestCase
     /** @test */
     public function should_return_empty_when_given_one_person(): void
     {
-        $list   = [];
-        $list[] = $this->sue;
-        $finder = new Finder($list);
-
-        $result = $finder->find(self::CLOSEST_MODE);
+        $result = $this->closestFinder([$this->sue])->find(self::CLOSEST_MODE);
 
         $this->assertEquals(null, $result->youngerPerson());
         $this->assertEquals(null, $result->olderPerson());
@@ -54,12 +49,10 @@ final class FinderTest extends TestCase
     /** @test */
     public function should_return_closest_two_for_two_people(): void
     {
-        $list   = [];
-        $list[] = $this->sue;
-        $list[] = $this->greg;
-        $finder = new Finder($list);
-
-        $result = $finder->find(self::CLOSEST_MODE);
+        $result = $this->closestFinder([
+            $this->sue,
+            $this->greg,
+        ])->find(self::CLOSEST_MODE);
 
         $this->assertEquals($this->sue, $result->youngerPerson());
         $this->assertEquals($this->greg, $result->olderPerson());
@@ -68,12 +61,10 @@ final class FinderTest extends TestCase
     /** @test */
     public function should_return_furthest_two_for_two_people(): void
     {
-        $list   = [];
-        $list[] = $this->mike;
-        $list[] = $this->greg;
-        $finder = new Finder($list);
-
-        $result = $finder->find(self::FURTHEST_MODE);
+        $result = $this->furthestFinder([
+            $this->mike,
+            $this->greg
+        ])->find(self::FURTHEST_MODE);
 
         $this->assertEquals($this->greg, $result->youngerPerson());
         $this->assertEquals($this->mike, $result->olderPerson());
@@ -82,15 +73,12 @@ final class FinderTest extends TestCase
     /** @test */
     public function should_return_furthest_two_for_four_people(): void
     {
-        $list   = [];
-        $list[] = $this->sue;
-        $list[] = $this->sarah;
-        $list[] = $this->mike;
-        $list[] = $this->greg;
-        shuffle($list);
-        $finder = new Finder($list);
-
-        $result = $finder->find(self::FURTHEST_MODE);
+        $result = $this->furthestFinder([
+            $this->sue,
+            $this->sarah,
+            $this->mike,
+            $this->greg
+        ])->find(self::FURTHEST_MODE);
 
         $this->assertEquals($this->sue, $result->youngerPerson());
         $this->assertEquals($this->sarah, $result->olderPerson());
@@ -99,14 +87,12 @@ final class FinderTest extends TestCase
     /** @test */
     public function should_return_closest_two_for_four_people(): void
     {
-        $list   = [];
-        $list[] = $this->sue;
-        $list[] = $this->sarah;
-        $list[] = $this->mike;
-        $list[] = $this->greg;
-        $finder = new Finder($list);
-
-        $result = $finder->find(self::CLOSEST_MODE);
+        $result = $this->closestFinder([
+            $this->sue,
+            $this->sarah,
+            $this->mike,
+            $this->greg
+        ])->find(self::CLOSEST_MODE);
 
         $this->assertEquals($this->sue, $result->youngerPerson());
         $this->assertEquals($this->greg, $result->olderPerson());
@@ -115,14 +101,22 @@ final class FinderTest extends TestCase
     /** @test */
     public function shouldReturnEmptyWhenGivenAnInvalidMode(): void
     {
-        $finder = new Finder([
+        $result = $this->closestFinder([
             $this->sue,
-            $this->sarah,
-        ]);
-
-        $result = $finder->find(self::AN_INVALID_FINDER_MODE);
+            $this->sarah
+        ])->find(self::AN_INVALID_FINDER_MODE);
 
         $this->assertEquals(null, $result->youngerPerson());
         $this->assertEquals(null, $result->olderPerson());
+    }
+
+    private function closestFinder(array $people): Finder
+    {
+        return new Finder($people, ClosestFinderMode::create());
+    }
+
+    private function furthestFinder(array $people): Finder
+    {
+        return new Finder($people, FurthestFinderMode::create());
     }
 }

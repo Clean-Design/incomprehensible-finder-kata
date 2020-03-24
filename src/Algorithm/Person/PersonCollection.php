@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Kata\Algorithm;
+namespace Kata\Algorithm\Person;
 
 use Countable;
 
